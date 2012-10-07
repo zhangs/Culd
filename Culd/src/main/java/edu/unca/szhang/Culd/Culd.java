@@ -18,7 +18,7 @@ public class Culd extends JavaPlugin {
         new CuldListener(this);
         
         // set the command executor for sample
-        this.getCommand("sample").setExecutor(new CuldCommandExecutor(this));
+        this.getCommand("culd").setExecutor(new CuldCommandExecutor(this));
     }
     
     /*
