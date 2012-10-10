@@ -31,3 +31,5 @@ permissions:
         description: changes target terrain element to sand
       culd.growth:
         description: changes target terrain element to grass
+      culd.subside:
+        description: lowers target terrain by 1 level

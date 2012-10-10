@@ -52,6 +52,7 @@ public class CuldCommandExecutor implements CommandExecutor {
 	    		user.sendMessage("/culd sink <player> : Changes block of target to water - sacrifice");	    		
 	    		user.sendMessage("/culd weathering <player> : Changes block of target to sand - sacrifice");	    		
 	    		user.sendMessage("/culd growth <player> : Changes block of target to grass - sacrifice");	    		
+	    		user.sendMessage("/culd subside <player> : Lowers block of target by 1 level - sacrifice");	    		
 	    			    		
 	    		return true;
     		}    		
@@ -131,6 +132,7 @@ public class CuldCommandExecutor implements CommandExecutor {
 	            		if (target.isOnline() && !target.isDead()) {
 	    	    			Location area = target.getLocation();
 	    	    			World world = area.getWorld();
+	    	    			area.setY(area.getY() - 1);	    	    			
 	    	    			Block targetblock = world.getBlockAt(area);
 	    	    			targetblock.setType(Material.FIRE);
 	    	    			
@@ -168,6 +170,7 @@ public class CuldCommandExecutor implements CommandExecutor {
 	            		if (target.isOnline() && !target.isDead()) {
 	    	    			Location area = target.getLocation();
 	    	    			World world = area.getWorld();
+	    	    			area.setY(area.getY() - 1);	    	    			
 	    	    			Block targetblock = world.getBlockAt(area);
 	    	    			targetblock.setType(Material.WATER);
 	    	    			
@@ -205,6 +208,7 @@ public class CuldCommandExecutor implements CommandExecutor {
 	            		if (target.isOnline() && !target.isDead()) {
 	    	    			Location area = target.getLocation();
 	    	    			World world = area.getWorld();
+	    	    			area.setY(area.getY() - 1);	    	    			
 	    	    			Block targetblock = world.getBlockAt(area);
 	    	    			targetblock.setType(Material.SAND);
 	    	    			
@@ -242,11 +246,50 @@ public class CuldCommandExecutor implements CommandExecutor {
 	            		if (target.isOnline() && !target.isDead()) {
 	    	    			Location area = target.getLocation();
 	    	    			World world = area.getWorld();
+	    	    			area.setY(area.getY() - 1);
 	    	    			Block targetblock = world.getBlockAt(area);
 	    	    			targetblock.setType(Material.GRASS);
 	    	    			
 	    	    			target.sendMessage("Wild Growth was casted on you by " + user.getName() + "!");
 	                		user.sendMessage("Wild Growth");
+	            		}
+	            		else if (!(target.isOnline() && !target.isDead())) {
+	            			user.sendMessage("Target does not exist!");
+	            		}        			
+	        		}	    			
+	    		
+	    			return true;
+    	        }
+    		}    		
+    		
+    		// subside - Lowers target's highest level territory by 1 level
+    		// -> Minecraft ->
+    		// Lowers the block stood on by target by 1 level 		
+    		else if (args[0].equalsIgnoreCase("subside")) {
+    	        if (args.length < 2) {
+    	            sender.sendMessage("Command for Subside is culd subside <player>");
+    	            return false;
+    	         }
+    	        else {
+		    		Player user = (Player) sender;    				    			    		    		
+	    			Player target = sender.getServer().getPlayer(args[1]);
+		    		PlayerInventory userinven = user.getInventory();	    			    			
+	    			
+	        		if (user.getItemInHand().getType() == Material.AIR || user.getItemInHand() == null) {
+	        			user.sendMessage("You must hold something to sacrifice!");
+	        		}
+	        		else {
+	        			userinven.removeItem(user.getInventory().getItemInHand());
+	        			
+	            		if (target.isOnline() && !target.isDead()) {
+	    	    			Location area = target.getLocation();
+	    	    			World world = area.getWorld();
+	    	    			area.setY(area.getY() - 1);
+	    	    			Block targetblock = world.getBlockAt(area);
+	    	    			targetblock.setType(Material.AIR);
+	    	    			
+	    	    			target.sendMessage("Subsidence was casted on you by " + user.getName() + "!");
+	                		user.sendMessage("Subsidence");
 	            		}
 	            		else if (!(target.isOnline() && !target.isDead())) {
 	            			user.sendMessage("Target does not exist!");
