@@ -2,7 +2,11 @@ package edu.unca.szhang.Culd;
 
 import java.util.Random;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -44,6 +48,10 @@ public class CuldCommandExecutor implements CommandExecutor {
 	    		user.sendMessage("/culd find : Gain an item");
 	    		user.sendMessage("/culd ruin <player> : Target <player> loses all items - sacrifice");
 	    		user.sendMessage("/culd hope : Gain two items - sacrifice");
+	    		user.sendMessage("/culd upheaval <player> : Changes block of target to fire - sacrifice");	    		
+	    		user.sendMessage("/culd sink <player> : Changes block of target to water - sacrifice");	    		
+	    		user.sendMessage("/culd weathering <player> : Changes block of target to sand - sacrifice");	    		
+	    		user.sendMessage("/culd growth <player> : Changes block of target to grass - sacrifice");	    		
 	    			    		
 	    		return true;
     		}    		
@@ -100,6 +108,154 @@ public class CuldCommandExecutor implements CommandExecutor {
 	        		return true;
     	        }
     		}
+    		
+    		// Upheaval - Change target territory to fire
+    		// -> Minecraft ->
+    		// Change block of target player to fire    		
+    		else if (args[0].equalsIgnoreCase("upheaval")) {
+    	        if (args.length < 2) {
+    	            sender.sendMessage("Command for Upheaval is culd upheaval <player>");
+    	            return false;
+    	         }
+    	        else {
+		    		Player user = (Player) sender;    				    			    		    		
+	    			Player target = sender.getServer().getPlayer(args[1]);
+		    		PlayerInventory userinven = user.getInventory();	    			    			
+	    			
+	        		if (user.getItemInHand().getType() == Material.AIR || user.getItemInHand() == null) {
+	        			user.sendMessage("You must hold something to sacrifice!");
+	        		}
+	        		else {
+	        			userinven.removeItem(user.getInventory().getItemInHand());
+	        			
+	            		if (target.isOnline() && !target.isDead()) {
+	    	    			Location area = target.getLocation();
+	    	    			World world = area.getWorld();
+	    	    			Block targetblock = world.getBlockAt(area);
+	    	    			targetblock.setType(Material.FIRE);
+	    	    			
+	    	    			target.sendMessage("Upheaval was casted on you by " + user.getName() + "!");
+	                		user.sendMessage("Upheaval");
+	            		}
+	            		else if (!(target.isOnline() && !target.isDead())) {
+	            			user.sendMessage("Target does not exist!");
+	            		}        			
+	        		}	    			
+	    		
+	    			return true;
+    	        }
+    		}  
+    		
+    		// Sink - Change target territory to water
+    		// -> Minecraft ->
+    		// Change block of target player to water   		
+    		else if (args[0].equalsIgnoreCase("sink")) {
+    	        if (args.length < 2) {
+    	            sender.sendMessage("Command for Sink is culd sink <player>");
+    	            return false;
+    	         }
+    	        else {
+		    		Player user = (Player) sender;    				    			    		    		
+	    			Player target = sender.getServer().getPlayer(args[1]);
+		    		PlayerInventory userinven = user.getInventory();	    			    			
+	    			
+	        		if (user.getItemInHand().getType() == Material.AIR || user.getItemInHand() == null) {
+	        			user.sendMessage("You must hold something to sacrifice!");
+	        		}
+	        		else {
+	        			userinven.removeItem(user.getInventory().getItemInHand());
+	        			
+	            		if (target.isOnline() && !target.isDead()) {
+	    	    			Location area = target.getLocation();
+	    	    			World world = area.getWorld();
+	    	    			Block targetblock = world.getBlockAt(area);
+	    	    			targetblock.setType(Material.WATER);
+	    	    			
+	    	    			target.sendMessage("Sink was casted on you by " + user.getName() + "!");
+	                		user.sendMessage("Sink");
+	            		}
+	            		else if (!(target.isOnline() && !target.isDead())) {
+	            			user.sendMessage("Target does not exist!");
+	            		}        			
+	        		}	    			
+	    		
+	    			return true;
+    	        }
+    		}    		
+    		
+    		// Weathering - Change target territory to wind
+    		// -> Minecraft ->
+    		// Change block of target player to Sand  		
+    		else if (args[0].equalsIgnoreCase("weathering")) {
+    	        if (args.length < 2) {
+    	            sender.sendMessage("Command for Weathering is culd weathering <player>");
+    	            return false;
+    	         }
+    	        else {
+		    		Player user = (Player) sender;    				    			    		    		
+	    			Player target = sender.getServer().getPlayer(args[1]);
+		    		PlayerInventory userinven = user.getInventory();	    			    			
+	    			
+	        		if (user.getItemInHand().getType() == Material.AIR || user.getItemInHand() == null) {
+	        			user.sendMessage("You must hold something to sacrifice!");
+	        		}
+	        		else {
+	        			userinven.removeItem(user.getInventory().getItemInHand());
+	        			
+	            		if (target.isOnline() && !target.isDead()) {
+	    	    			Location area = target.getLocation();
+	    	    			World world = area.getWorld();
+	    	    			Block targetblock = world.getBlockAt(area);
+	    	    			targetblock.setType(Material.SAND);
+	    	    			
+	    	    			target.sendMessage("Weathering was casted on you by " + user.getName() + "!");
+	                		user.sendMessage("Weathering");
+	            		}
+	            		else if (!(target.isOnline() && !target.isDead())) {
+	            			user.sendMessage("Target does not exist!");
+	            		}        			
+	        		}	    			
+	    		
+	    			return true;
+    	        }
+    		}    
+    		
+    		// Wild Growth - Change target territory to earth
+    		// -> Minecraft ->
+    		// Change block of target player to grass  		
+    		else if (args[0].equalsIgnoreCase("growth")) {
+    	        if (args.length < 2) {
+    	            sender.sendMessage("Command for Wild Growth is culd growth <player>");
+    	            return false;
+    	         }
+    	        else {
+		    		Player user = (Player) sender;    				    			    		    		
+	    			Player target = sender.getServer().getPlayer(args[1]);
+		    		PlayerInventory userinven = user.getInventory();	    			    			
+	    			
+	        		if (user.getItemInHand().getType() == Material.AIR || user.getItemInHand() == null) {
+	        			user.sendMessage("You must hold something to sacrifice!");
+	        		}
+	        		else {
+	        			userinven.removeItem(user.getInventory().getItemInHand());
+	        			
+	            		if (target.isOnline() && !target.isDead()) {
+	    	    			Location area = target.getLocation();
+	    	    			World world = area.getWorld();
+	    	    			Block targetblock = world.getBlockAt(area);
+	    	    			targetblock.setType(Material.GRASS);
+	    	    			
+	    	    			target.sendMessage("Wild Growth was casted on you by " + user.getName() + "!");
+	                		user.sendMessage("Wild Growth");
+	            		}
+	            		else if (!(target.isOnline() && !target.isDead())) {
+	            			user.sendMessage("Target does not exist!");
+	            		}        			
+	        		}	    			
+	    		
+	    			return true;
+    	        }
+    		}    		
     		
     		// Wind of Hope - Draw two cards
     		// -> Minecraft ->

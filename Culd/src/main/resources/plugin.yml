@@ -23,3 +23,11 @@ permissions:
         description: destroys all items in target inventory
       culd.hope:
         description: gives user two new items
+      culd.upheaval:
+        description: changes target terrain element to fire
+      culd.sink:
+        description: changes target terrain element to water
+      culd.weathering:
+        description: changes target terrain element to sand
+      culd.growth:
+        description: changes target terrain element to grass
