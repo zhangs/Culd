@@ -33,3 +33,9 @@ permissions:
         description: changes target terrain element to grass
       culd.subside:
         description: lowers target terrain by 1 level
+      culd.omnipotent:
+        description: Reveals current status of other players
+      culd.blast:
+        description: Deals 3 hearts of damage to target player
+      culd.cure:
+        description: Heals target player fully

@@ -2,6 +2,7 @@ package edu.unca.szhang.Culd;
 
 import java.util.Random;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -52,7 +53,10 @@ public class CuldCommandExecutor implements CommandExecutor {
 	    		user.sendMessage("/culd sink <player> : Changes block of target to water - sacrifice");	    		
 	    		user.sendMessage("/culd weathering <player> : Changes block of target to sand - sacrifice");	    		
 	    		user.sendMessage("/culd growth <player> : Changes block of target to grass - sacrifice");	    		
-	    		user.sendMessage("/culd subside <player> : Lowers block of target by 1 level - sacrifice");	    		
+	    		user.sendMessage("/culd subside <player> : Lowers block of target by 1 level - sacrifice");
+	    		user.sendMessage("/culd omnipotent : Reveals health and location of other players");	    		
+	    		user.sendMessage("/culd blast <player> : Deals 3 hearts of damage to player - sacrifice");	    		
+	    		user.sendMessage("/culd cure <player> : Fully heals target player");	    		
 	    			    		
 	    		return true;
     		}    		
@@ -328,10 +332,104 @@ public class CuldCommandExecutor implements CommandExecutor {
         		return true;
 	        }
     		
+    		// Evil Blast - Does 30 damage to target creature
+    		// -> Minecraft ->
+    		// Does 3 heart of damage to target user
+       		else if (args[0].equalsIgnoreCase("blast")) {
+    	        if (args.length < 2) {
+    	            sender.sendMessage("Command for Evil Blast is culd blast <player>");
+    	            return false;
+    	         }
+    	        else {
+		    		Player user = (Player) sender;    				    			    		    		
+	    			Player target = sender.getServer().getPlayer(args[1]);
+		    		PlayerInventory userinven = user.getInventory();	    			    			
+	    			
+	        		if (user.getItemInHand().getType() == Material.AIR || user.getItemInHand() == null) {
+	        			user.sendMessage("You must hold something to sacrifice!");
+	        		}
+	        		else {
+	        			userinven.removeItem(user.getInventory().getItemInHand());
+	        			
+	            		if (target.isOnline() && !target.isDead()) {
+	    	    			Location area = target.getLocation();
+	    	    			World world = area.getWorld();	   
+	    	    			
+	    	    			int targetcurlife = target.getHealth() - 6;	            			
+	            			world.createExplosion(area, 1);	            			
+	            			target.setHealth(targetcurlife);
+	            			
+	    	    			target.sendMessage("Evil Blast was casted on you by " + user.getName() + "!");
+	                		user.sendMessage("Evil Blast");	    	    			
+	            		}
+	            		else if (!(target.isOnline() && !target.isDead())) {
+	            			user.sendMessage("Target does not exist!");
+	            		}        			
+	        		}	    			
+	    		
+	    			return true;
+    	        }
+    		}      		
+    		
+    		// Cure - Fully heals target creature
+    		// -> Minecraft ->
+    		// Fully heals target user
+       		else if (args[0].equalsIgnoreCase("cure")) {
+    	        if (args.length < 2) {
+    	            sender.sendMessage("Command for Cure is culd cure <player>");
+    	            return false;
+    	         }
+    	        else {
+		    		Player user = (Player) sender;    				    			    		    		
+	    			Player target = sender.getServer().getPlayer(args[1]);
+	        			
+            		if (target.isOnline() && !target.isDead()) {	            			
+            			target.setHealth(20);
+            			
+    	    			target.sendMessage("Cure was casted on you by " + user.getName() + "!");
+                		user.sendMessage("Cure");	    	    			
+            		}
+            		else if (!(target.isOnline() && !target.isDead())) {
+            			user.sendMessage("Target does not exist!");
+            		}        			
+	        			    			
+	    		
+	    			return true;
+    	        }
+    		}      		    		
+    		
+    		// Omnipotent - Choose 1 from 7 Shrine Effects
+    		// -> Minecraft ->
+    		// (Following definition of omnipotent) Reveals health and location of other players
+    		else if (args[0].equalsIgnoreCase("omnipotent")) {
+	    		Player user = (Player) sender;
+    			
+    			if (!sender.hasPermission("Culd.omnipotent")) {
+        			user.sendMessage("You do not have permission.");
+    			}
+    			else if (sender.hasPermission("Culd.omnipotent")) {
+    				user.sendMessage("Omnipotent");
+    				plugin.log.info("Omnipotent reveals all...");    				
+    				
+        			Player [] otherusers = Bukkit.getOnlinePlayers();
+        			
+        			for (int i = 0; i < otherusers.length; i++) {
+        				if (!(otherusers[i] == user)) {
+        					user.sendMessage(otherusers[i].getName() + " is currently at X=" + otherusers[i].getLocation().getX() + " Y=" + otherusers[i].getLocation().getY() + " Z=" + otherusers[i].getLocation().getZ());
+            				user.sendMessage(otherusers[i].getName() + "'s health is " + otherusers[i].getHealth());
+            				
+            				plugin.log.info(otherusers[i].getName() + " is currently at X=" + otherusers[i].getLocation().getX() + " Y=" + otherusers[i].getLocation().getY() + " Z=" + otherusers[i].getLocation().getZ());
+            				plugin.log.info(otherusers[i].getName() + "'s health is " + otherusers[i].getHealth());        					
+        				}        	
+        			}
+    			}
+    			
+	    		return true;        			    			
+    		}    		    	
 
-    		else {
+    		else {    			
     			return false;
-    		}    	
+    		}    	    		    		    	
     }
     
     public static int itemgeneration () {
