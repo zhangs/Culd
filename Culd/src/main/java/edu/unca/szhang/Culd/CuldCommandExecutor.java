@@ -409,7 +409,7 @@ public class CuldCommandExecutor implements CommandExecutor {
     			}
     			else if (sender.hasPermission("Culd.omnipotent")) {
     				user.sendMessage("Omnipotent");
-    				plugin.log.info("Omnipotent reveals all...");    				
+    				plugin.log.info("Omnipotent used by: " + user.getName());    				
     				
         			Player [] otherusers = Bukkit.getOnlinePlayers();
         			
@@ -417,7 +417,7 @@ public class CuldCommandExecutor implements CommandExecutor {
         				if (!(otherusers[i] == user)) {
         					user.sendMessage(otherusers[i].getName() + " is currently at X=" + otherusers[i].getLocation().getX() + " Y=" + otherusers[i].getLocation().getY() + " Z=" + otherusers[i].getLocation().getZ());
             				user.sendMessage(otherusers[i].getName() + "'s health is " + otherusers[i].getHealth());
-            				
+
             				plugin.log.info(otherusers[i].getName() + " is currently at X=" + otherusers[i].getLocation().getX() + " Y=" + otherusers[i].getLocation().getY() + " Z=" + otherusers[i].getLocation().getZ());
             				plugin.log.info(otherusers[i].getName() + "'s health is " + otherusers[i].getHealth());        					
         				}        	
