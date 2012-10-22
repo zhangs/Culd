@@ -355,7 +355,10 @@ public class CuldCommandExecutor implements CommandExecutor {
 	    	    			Location area = target.getLocation();
 	    	    			World world = area.getWorld();	   
 	    	    			
-	    	    			int targetcurlife = target.getHealth() - 6;	            			
+	    	    			int targetcurlife = target.getHealth() - 6;	 
+	    	    			if (targetcurlife < 0) {
+	    	    				targetcurlife = 0;
+	    	    			}
 	            			world.createExplosion(area, 1);	            			
 	            			target.setHealth(targetcurlife);
 	            			

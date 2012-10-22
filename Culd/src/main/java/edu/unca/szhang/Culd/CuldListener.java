@@ -2,9 +2,16 @@ package edu.unca.szhang.Culd;
 
 import java.text.MessageFormat;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -46,4 +53,34 @@ public class CuldListener implements Listener {
                 entityType.getName(),
                 entityType.getTypeId()));
     }
-}
+    
+    // Turns object you touch to stone
+	@EventHandler(priority = EventPriority.HIGH)
+	public void wall (PlayerInteractEntityEvent event) {
+		Entity animal = event.getRightClicked();
+		Location loc= animal.getLocation();		
+		
+		loc.getWorld().strikeLightningEffect(loc);
+		loc.getWorld().getBlockAt(loc).setType(Material.STONE);	
+		
+		Location newloc = loc;
+		newloc.setY(loc.getY() - 12);
+		animal.teleport(newloc);
+
+		event.getPlayer().sendMessage("Turn to the Wall");
+	}
+	
+	@EventHandler(priority = EventPriority.HIGH)
+	public void test (EntityDeathEvent event) {
+		if (!(event.getEntity().getType() == EntityType.ZOMBIE)) {
+			Location loc = event.getEntity().getLocation();
+			loc.getWorld().spawnEntity(loc, EntityType.ZOMBIE);
+	
+			Player [] users = Bukkit.getOnlinePlayers();
+			for (int i = 0; i < users.length; i++) {
+				users[i].sendMessage("Raise Dead occurred");
+			}
+		}
+	}	
+}    
+
