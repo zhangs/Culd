@@ -41,7 +41,6 @@ public class CuldCommandExecutor implements CommandExecutor {
     			return false;
     		} 
     		
-    		// Explanation of all available commands
     		else if (args[0].equalsIgnoreCase("description")) {
 	    		Player user = (Player) sender;
 	    		
@@ -406,34 +405,53 @@ public class CuldCommandExecutor implements CommandExecutor {
     		// (Following definition of omnipotent) Reveals health and location of other players
     		else if (args[0].equalsIgnoreCase("omnipotent")) {
 	    		Player user = (Player) sender;
-    			
-    			if (!sender.hasPermission("Culd.omnipotent")) {
-        			user.sendMessage("You do not have permission.");
-    			}
-    			else if (sender.hasPermission("Culd.omnipotent")) {
-    				user.sendMessage("Omnipotent");
-    				plugin.log.info("Omnipotent used by: " + user.getName());    				
-    				
-        			Player [] otherusers = Bukkit.getOnlinePlayers();
-        			
-        			for (int i = 0; i < otherusers.length; i++) {
-        				if (!(otherusers[i] == user)) {
-        					user.sendMessage(otherusers[i].getName() + " is currently at X=" + otherusers[i].getLocation().getX() + " Y=" + otherusers[i].getLocation().getY() + " Z=" + otherusers[i].getLocation().getZ());
-            				user.sendMessage(otherusers[i].getName() + "'s health is " + otherusers[i].getHealth());
 
-            				plugin.log.info(otherusers[i].getName() + " is currently at X=" + otherusers[i].getLocation().getX() + " Y=" + otherusers[i].getLocation().getY() + " Z=" + otherusers[i].getLocation().getZ());
-            				plugin.log.info(otherusers[i].getName() + "'s health is " + otherusers[i].getHealth());        					
-        				}        	
-        			}
-    			}
+				user.sendMessage("Omnipotent");
+				plugin.log.info("Omnipotent used by: " + user.getName());    				
+				
+    			Player [] otherusers = Bukkit.getOnlinePlayers();
     			
+    			for (int i = 0; i < otherusers.length; i++) {
+    				if (!(otherusers[i] == user)) {
+    					user.sendMessage(otherusers[i].getName() + " is currently at X=" + otherusers[i].getLocation().getX() + " Y=" + otherusers[i].getLocation().getY() + " Z=" + otherusers[i].getLocation().getZ());
+        				user.sendMessage(otherusers[i].getName() + "'s health is " + otherusers[i].getHealth());
+
+        				plugin.log.info(otherusers[i].getName() + " is currently at X=" + otherusers[i].getLocation().getX() + " Y=" + otherusers[i].getLocation().getY() + " Z=" + otherusers[i].getLocation().getZ());
+        				plugin.log.info(otherusers[i].getName() + "'s health is " + otherusers[i].getHealth());        					
+    				}        	
+    			}
+    			        			
 	    		return true;        			    			
-    		}    		    	
-
-    		else {    			
+    		}   
+    		
+    		// Elemental Wrath - All creatures on territory not of their element -20 HP
+    		// -> Minecraft ->
+    		// Players not on grass have a chance of being struck by lightning
+    		// Sets the key (Wrath)'s value to true if false and false if true
+    		else if (args[0].equalsIgnoreCase("god") && args[1].equalsIgnoreCase("wrath")) {
+    			Player [] users = Bukkit.getOnlinePlayers();    		    	
+    			
+    			if (plugin.worldgod.get("Wrath")) {
+        			plugin.worldgod.put("Wrath", false);
+        			for (int i = 0; i < users.length; i++) {
+    					users[i].sendMessage("Elemental Wrath deactivated");
+    				}         			
+    			}
+    			else {
+        			plugin.worldgod.put("Wrath", true);
+			    	
+        			for (int i = 0; i < users.length; i++) {
+        					users[i].sendMessage("Elemental Wrath activated");
+        			}       				
+    			} 		    	
+		    	
+		    	return true;    			        	       			    		
+    		}    		
+			
+    		else {
     			return false;
-    		}    	    		    		    	
-    }
+    		}
+		}    			    		    		    	    
     
     public static int itemgeneration () {
         Random randomitem = new Random();        	

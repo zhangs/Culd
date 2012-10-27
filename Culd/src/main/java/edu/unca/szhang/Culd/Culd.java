@@ -1,5 +1,12 @@
 package edu.unca.szhang.Culd;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /*
@@ -8,6 +15,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Culd extends JavaPlugin {		
 	
 	CuldLogger log;
+	
+	// Map (to be Hashmap) that uses String and Boolean, when listener activates, 
+	// it checks if a certain word=setting is true
+	public Map <String, Boolean> worldgod;	
 	
     /*
      * This is called when your plug-in is enabled
@@ -19,6 +30,8 @@ public class Culd extends JavaPlugin {
     	
         // save the configuration file
         saveDefaultConfig();
+        
+        worldgod = new HashMap<String, Boolean>();
         
         // Create the SampleListener
         new CuldListener(this);
@@ -35,4 +48,18 @@ public class Culd extends JavaPlugin {
     	log.info("Plugin has been disabled");        
     }
 
+	public void setMetadata(Player player, String key, Object value, Culd plugin) {
+		player.setMetadata(key, new FixedMetadataValue(plugin, value));
+	}
+		
+	public Object getMetadata(Player player, String key, Culd plugin) {
+		List<MetadataValue> values = player.getMetadata(key);
+		for (MetadataValue value : values) {
+			if (value.getOwningPlugin().getDescription().getName()
+			.equals(plugin.getDescription().getName())) {
+			return (value.asBoolean());
+			}
+		}
+		return null;
+	}
 }

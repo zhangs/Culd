@@ -1,10 +1,12 @@
 package edu.unca.szhang.Culd;
 
 import java.text.MessageFormat;
+import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -14,6 +16,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.server.PluginEnableEvent;
 
 /*
  * This is a sample event listener
@@ -29,6 +33,12 @@ public class CuldListener implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         
         this.plugin = plugin;
+    }
+    
+    // sets worldly events to false upon start of plugin
+    @EventHandler
+    public void worldset(PluginEnableEvent event) {
+    	plugin.worldgod.put("Wrath", false);
     }
 
     /*
@@ -79,6 +89,24 @@ public class CuldListener implements Listener {
 			Player [] users = Bukkit.getOnlinePlayers();
 			for (int i = 0; i < users.length; i++) {
 				users[i].sendMessage("Raise Dead occurred");
+			}
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.HIGH)
+	public void wrath (PlayerMoveEvent event) {
+		if (plugin.worldgod.get("Wrath")) {			
+			Location playerloc = event.getTo();
+			Location checkloc = playerloc;
+			checkloc.setY(playerloc.getY() - 1);
+			
+	        Random randomnum = new Random();        	
+			
+			
+			if (!(checkloc.getBlock().getType() == Material.GRASS)) {
+				if (randomnum.nextInt(100) == 7) {
+					playerloc.getWorld().strikeLightning(playerloc);
+				}
 			}
 		}
 	}	
