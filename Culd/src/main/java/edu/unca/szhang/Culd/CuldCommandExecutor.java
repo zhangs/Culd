@@ -1,5 +1,7 @@
 package edu.unca.szhang.Culd;
 
+// TODO Reamp code visually
+
 import java.util.Random;
 
 import org.bukkit.Bukkit;
@@ -55,7 +57,10 @@ public class CuldCommandExecutor implements CommandExecutor {
 	    		user.sendMessage("/culd subside <player> : Lowers block of target by 1 level - sacrifice");
 	    		user.sendMessage("/culd omnipotent : Reveals health and location of other players");	    		
 	    		user.sendMessage("/culd blast <player> : Deals 3 hearts of damage to player - sacrifice");	    		
-	    		user.sendMessage("/culd cure <player> : Fully heals target player");	    		
+	    		user.sendMessage("/culd cure <player> : Fully heals target player");	
+	    		user.sendMessage("/culd god wrath : Sets world to Elemental Wrath (Chance of lightning when not on grass)");		    		
+	    		user.sendMessage("/culd god dead : Sets world to Raise Dead (Dead entities revive as zombies)");		    		
+	    		user.sendMessage("/culd god stone : Gives user the ability to petrify entities");		    		
 	    			    		
 	    		return true;
     		}    		
@@ -446,12 +451,64 @@ public class CuldCommandExecutor implements CommandExecutor {
     			} 		    	
 		    	
 		    	return true;    			        	       			    		
+    		}    	
+    		
+    		// Raise Dead - Places most recently destroyed creature into hand
+    		// -> Minecraft ->
+    		// Living entities revive as zombies when they die
+    		// Sets the key (Dead)'s value to true if false and false if true
+    		else if (args[0].equalsIgnoreCase("god") && args[1].equalsIgnoreCase("Dead")) {
+    			Player [] users = Bukkit.getOnlinePlayers();    		    	
+    			
+    			if (plugin.worldgod.get("Dead")) {
+        			plugin.worldgod.put("Dead", false);
+        			for (int i = 0; i < users.length; i++) {
+    					users[i].sendMessage("Raise Dead deactivated");
+    				}         			
+    			}
+    			else {
+        			plugin.worldgod.put("Dead", true);
+			    	
+        			for (int i = 0; i < users.length; i++) {
+        					users[i].sendMessage("Raise Dead activated");
+        			}       				
+    			} 		    	
+		    	
+		    	return true;    			        	       			    		
+    		}     	
+    		
+    		// Turn to the Wall - Transforms a creature to the wall-type creature of its element
+    		// -> Minecraft ->
+    		// Transforms entities to stone
+    		// Sets the key (Player's name)'s value to true if false and false if true
+    		else if (args[0].equalsIgnoreCase("god") && args[1].equalsIgnoreCase("Stone")) {
+    			Player user = (Player) sender;
+    			
+    			Player [] users = Bukkit.getOnlinePlayers();    		    	
+    			
+    			if (plugin.playerstone.get(user)) {
+        			plugin.playerstone.put(user, false);
+        			for (int i = 0; i < users.length; i++) {
+    					users[i].sendMessage(user.getName() + " deactivated Turn to the Wall");
+    				}         			
+    			}
+    			else {
+        			plugin.playerstone.put(user, true);
+			    	
+        			for (int i = 0; i < users.length; i++) {
+        					users[i].sendMessage(user.getName() + " activated Turn to the Wall");
+        			}       				
+    			} 		    	
+		    	
+		    	return true;    			        	       			    		
     		}    		
 			
     		else {
     			return false;
     		}
-		}    			    		    		    	    
+		}    
+    
+    
     
     public static int itemgeneration () {
         Random randomitem = new Random();        	

@@ -16,26 +16,4 @@ permissions:
     default: true
     children:
       culd.description:
-        description: explains all available commands
-      culd.find:
-        description: gives user an item
-      culd.ruin:
-        description: destroys all items in target inventory
-      culd.hope:
-        description: gives user two new items
-      culd.upheaval:
-        description: changes target terrain element to fire
-      culd.sink:
-        description: changes target terrain element to water
-      culd.weathering:
-        description: changes target terrain element to sand
-      culd.growth:
-        description: changes target terrain element to grass
-      culd.subside:
-        description: lowers target terrain by 1 level
-      culd.omnipotent:
-        description: Reveals current status of other players
-      culd.blast:
-        description: Deals 3 hearts of damage to target player
-      culd.cure:
-        description: Heals target player fully
+        description: explains all available commands         

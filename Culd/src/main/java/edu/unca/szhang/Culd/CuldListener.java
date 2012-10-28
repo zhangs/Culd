@@ -39,6 +39,7 @@ public class CuldListener implements Listener {
     @EventHandler
     public void worldset(PluginEnableEvent event) {
     	plugin.worldgod.put("Wrath", false);
+    	plugin.worldgod.put("Dead", false);    	
     }
 
     /*
@@ -46,6 +47,7 @@ public class CuldListener implements Listener {
      */
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
+    	plugin.playerstone.put(event.getPlayer(), false);
         event.getPlayer().sendMessage(this.plugin.getConfig().getString("sample.message"));
     }
     
@@ -67,28 +69,32 @@ public class CuldListener implements Listener {
     // Turns object you touch to stone
 	@EventHandler(priority = EventPriority.HIGH)
 	public void wall (PlayerInteractEntityEvent event) {
-		Entity animal = event.getRightClicked();
-		Location loc= animal.getLocation();		
-		
-		loc.getWorld().strikeLightningEffect(loc);
-		loc.getWorld().getBlockAt(loc).setType(Material.STONE);	
-		
-		Location newloc = loc;
-		newloc.setY(loc.getY() - 12);
-		animal.teleport(newloc);
-
-		event.getPlayer().sendMessage("Turn to the Wall");
+		if (plugin.playerstone.get(event.getPlayer())) {
+			Entity animal = event.getRightClicked();
+			Location loc= animal.getLocation();		
+			
+			loc.getWorld().strikeLightningEffect(loc);
+			loc.getWorld().getBlockAt(loc).setType(Material.STONE);	
+			
+			Location newloc = loc;
+			newloc.setY(loc.getY() - 12);
+			animal.teleport(newloc);
+	
+			event.getPlayer().sendMessage("Turn to the Wall");
+		}
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH)
-	public void test (EntityDeathEvent event) {
-		if (!(event.getEntity().getType() == EntityType.ZOMBIE)) {
-			Location loc = event.getEntity().getLocation();
-			loc.getWorld().spawnEntity(loc, EntityType.ZOMBIE);
-	
-			Player [] users = Bukkit.getOnlinePlayers();
-			for (int i = 0; i < users.length; i++) {
-				users[i].sendMessage("Raise Dead occurred");
+	public void raisedead (EntityDeathEvent event) {
+		if (plugin.worldgod.get("Dead")) {
+			if (!(event.getEntity().getType() == EntityType.ZOMBIE)) {
+				Location loc = event.getEntity().getLocation();
+				loc.getWorld().spawnEntity(loc, EntityType.ZOMBIE);
+		
+				Player [] users = Bukkit.getOnlinePlayers();
+				for (int i = 0; i < users.length; i++) {
+					users[i].sendMessage("Raise Dead occurred");
+				}
 			}
 		}
 	}

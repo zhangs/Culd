@@ -20,6 +20,10 @@ public class Culd extends JavaPlugin {
 	// it checks if a certain word=setting is true
 	public Map <String, Boolean> worldgod;	
 	
+	// Map that stores keys of each player, when true, they have the ability to petrify entities
+	// It is declared false when player log-ins
+	public Map <Player, Boolean> playerstone;
+	
     /*
      * This is called when your plug-in is enabled
      */
@@ -32,6 +36,7 @@ public class Culd extends JavaPlugin {
         saveDefaultConfig();
         
         worldgod = new HashMap<String, Boolean>();
+        playerstone = new HashMap<Player, Boolean>();
         
         // Create the SampleListener
         new CuldListener(this);
