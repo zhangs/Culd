@@ -43,7 +43,6 @@ public class CuldCommandExecutor implements CommandExecutor {
 		PlayerInventory targetinven = user.getInventory(); // Just to initialize      				
 		
 		String order = args[0];
-		plugin.log.info(order); //---		
 		if (!(order.equalsIgnoreCase("god"))) {
 			if (args.length == 2) {
 				if (sender.getServer().getPlayer(args[1]) == null) {
